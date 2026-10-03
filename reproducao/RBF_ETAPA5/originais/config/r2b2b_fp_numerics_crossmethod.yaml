@@ -1,0 +1,47 @@
+schema_version: 1.0.0
+mission_id: ISDBD-R2-B2B-FP-NUMERICS-AND-CROSSMETHOD-FREEZE-001
+status: FP_NUMERICS_AND_CROSSMETHOD_RULE_FROZEN
+source_audit:
+  commit: 7a055e86fb8ac46351ab9e62af8e8195236c67c9
+  suite_profiles: 1040
+  sobol_profiles: 1024
+  stress_profiles: 16
+  reference: ISD_12801_INTERNAL_NOT_EXACT
+  solver: SCHAFETTER_GUMMEL_RESISTANCE_NETWORK
+fp_production:
+  grid_points: 6401
+  H_nm: 4.0
+  L_nm: 8.0
+  dz_nm: 0.00125
+  refinement_grid_points: 12801
+  refinement_dz_nm: 0.000625
+cross_method_validation:
+  reference_method: ISD_LOG_TRAPEZOID
+  reference_default_grid_points: 3201
+  relative_tolerance: 5.0e-05
+  metric: abs(P_FP-P_ISD)/P_ISD
+  normal_case: require FP_6401 vs ISD_3201 <= 5e-5
+  if_failed: compute ISD_6401, ISD_12801 and FP_12801; mark FP_ISD_REFINEMENT_REQUIRED
+  final_refinement_rule: require FP_12801 vs ISD_12801 <= 5e-5
+  if_final_failed: block profile for numerical review
+empirical_basis:
+  max_rel_FP1601_vs_ISD12801: 0.00040606630778375655
+  max_rel_FP3201_vs_ISD12801: 0.00010150633942360126
+  max_rel_FP6401_vs_ISD12801: 2.537594455555972e-05
+  max_rel_FP12801_vs_ISD12801: 6.343946073498383e-06
+  richardson_max_rel_extrapolated_FP_vs_ISD12801: 5.370818053141103e-09
+  order_p1_median: 1.99999439426627
+  order_p2_median: 1.99999964729145
+selection_logic:
+  grid_3201_rejected: true
+  grid_3201_reason: worst observed FP-vs-ISD12801 error exceeds 5e-5
+  grid_6401_selected: true
+  grid_6401_reason: coarsest audited FP grid with worst observed error below 5e-5
+  tolerance_reason: conservative round tolerance approximately 1.97x the worst observed
+    6401 error
+scope:
+  new_FP_computation_run: false
+  new_ISD_computation_run: false
+  BD_computed: false
+  MFPT_computed: false
+  production_map_started: false

@@ -1,0 +1,141 @@
+release: R2_D2G
+status: FIGURE_REFINEMENT_POLICY_AMENDMENT_FROZEN
+
+parent_policy:
+  path: config/r2d2c_production_map_construction_policy.yaml
+  status: remains_valid_except_explicit_amendments_below
+
+evidence:
+  source: data/model/r2d2f_production_map_visual_characterization_metrics.json
+  production_N: 56926
+  proxy_rule:
+    definition: sign_gmax_minus_ln10_eta
+    accuracy: 0.923180971787935
+    mismatch_N: 4373
+    mismatch_fraction: 0.0768190282120648
+    actual_thermo_proxy_diffusive: 7
+    actual_diffusive_proxy_thermo: 4366
+    interpretation: amplitude_only_proxy_systematically_overcalls_thermodynamic_control
+  deltaC_observed_range:
+    min: -3.112902896280
+    max: 11.10463663062
+  rho_observed_range:
+    min: -3.175983090560
+    max: 0.9851511692990
+  near_boundary:
+    definition: abs_deltaC_le_0p10
+    N: 985
+    equal_axis_lo: -0.03692402445761
+    equal_axis_hi: 1.848627598435
+  closest_opposite_regime_proxy_distance: 3.878294695187e-05
+
+global_rules_unchanged:
+  use_all_accepted_profiles: true
+  production_point_count: 56926
+  interpolation: prohibited
+  smoothing: prohibited
+  extrapolation: prohibited
+  aggregation: prohibited
+  percentile_clipping: prohibited
+  population_probability_interpretation: prohibited
+  neutral_band: prohibited
+  fitted_proxy_boundary_as_exact: prohibited
+  exact_boundary_definition: AG_equals_AD
+
+amendment_panel_A:
+  main_panel:
+    coordinates: [AG, AD]
+    point_color: log10_P_cm_s
+    color_limits: full_observed_range
+    exact_boundary: AG_equals_AD
+    preserve_full_view: true
+  near_boundary_inset:
+    required: true
+    subset: abs_deltaC_le_0p10
+    subset_N_expected: 985
+    xlim: [-0.03692402445761, 1.848627598435]
+    ylim: [-0.03692402445761, 1.848627598435]
+    equal_coordinate_scale: true
+    exact_boundary: AG_equals_AD
+    point_color: log10_P_cm_s
+    color_normalization: same_as_main_panel_A
+    purpose: reveal_exact_transition_geometry_hidden_by_full_axis_aspect_ratio
+  scientific_meaning_changed: false
+
+amendment_panel_B:
+  coordinates: [g_max, eta]
+  point_color: deltaC
+  color_normalization:
+    type: TwoSlopeNorm
+    vmin: -3.112902896280
+    vcenter: 0.0
+    vmax: 11.10463663062
+    use_complete_observed_range: true
+    percentile_clipping: false
+    note: piecewise_linear_diverging_normalization_with_zero_at_colormap_midpoint
+  amplitude_only_reference:
+    equation: eta_equals_gmax_div_ln10
+    remains_dashed_proxy_reference: true
+    exact_boundary_label_prohibited: true
+  short_annotation:
+    required: true
+    content: amplitude_proxy_agreement_92p32pct_mismatch_7p68pct
+  caption_evidence:
+    actual_diffusive_proxy_thermo: 4366
+    actual_thermo_proxy_diffusive: 7
+    interpretation: amplitude_only_proxy_overcalls_thermodynamic_control
+  mismatch_point_overlay:
+    required: false
+    rationale: avoid_overplotting_4373_points_in_primary_panel
+  scientific_meaning_changed: false
+
+amendment_panel_C:
+  coordinates: [g_max, eta]
+  point_color: rho
+  color_normalization:
+    type: TwoSlopeNorm
+    vmin: -3.175983090560
+    vcenter: 0.0
+    vmax: 0.9851511692990
+    use_complete_observed_range: true
+    percentile_clipping: false
+    note: piecewise_linear_diverging_normalization_with_zero_at_colormap_midpoint
+  exact_identity_to_state_in_caption: deltaC_equals_gmax_minus_ln10_eta_plus_rho
+  scientific_meaning_changed: false
+
+interpretation_frozen:
+  - AG_AD_is_the_exact_control_plane
+  - gmax_eta_is_an_intuitive_but_nonidentifying_projection
+  - amplitude_only_proxy_has_high_global_agreement_but_nonnegligible_and_asymmetric_failure
+  - rho_is_the_exact_shape_support_correction_to_the_amplitude_only_margin
+  - nearly_coincident_proxy_coordinates_can_have_opposite_exact_regimes
+  - no_population_prevalence_claim_from_Sobol_density
+
+rendering_guidance_for_next_gate:
+  source_dataset: data/model/r2d2bfix2_production_ensemble.csv.gz
+  preserve_all_56926_points: true
+  draw_order: ascending_sobol_index
+  rasterized_scatter_in_pdf: true
+  outputs: [pdf, png_600dpi]
+  deterministic_repeat_hashes_required: true
+  cosmetic_point_size_and_alpha:
+    may_be_tuned_for_legibility: true
+    must_not_hide_or_remove_points: true
+  primary_three_panel_layout: retained
+  old_canonical_figure:
+    path: figures/R2_D2D_PRODUCTION_MAPS.pdf
+    retain_as_historical_artifact: true
+    overwrite_prohibited: true
+  refined_output_names:
+    pdf: figures/R2_D2H_REFINED_PRODUCTION_MAPS.pdf
+    png: figures/R2_D2H_REFINED_PRODUCTION_MAPS_600dpi.png
+
+not_authorized:
+  model_recalculation: true
+  production_dataset_change: true
+  novelty_claim: true
+  MFPT_regime_definition: true
+  neutral_band: true
+  interpolation_based_exact_boundary: true
+
+next_gate: R2_D2H_RENDER_AND_AUDIT_REFINED_PRODUCTION_MAPS

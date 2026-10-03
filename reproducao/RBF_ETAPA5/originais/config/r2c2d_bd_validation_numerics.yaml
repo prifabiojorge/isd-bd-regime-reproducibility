@@ -1,0 +1,87 @@
+release: R2_C2D
+status: BD_VALIDATION_NUMERICS_FROZEN
+
+role:
+  brownian_dynamics: independent_stochastic_validation
+  production_regime_map: deterministic_ISD_FP
+  mfpt: separate_kinetic_diagnostic_not_part_of_permeability_freeze
+
+stochastic_dynamics:
+  interpretation: Ito
+  drift: D_times_ell_prime_minus_g_prime
+  absorbing_boundary_detection: Brownian_bridge
+  bridge_status:
+    flat_constant_D: exact_and_validated
+    variable_D: local_D_approximation_validated_on_auditable_nonflat_profiles
+
+integrator_policy:
+  primary: Euler_Maruyama
+  cross_method_control: Milstein
+  rationale: no_statistically_significant_EM_vs_Milstein_difference_in_validated_cases
+  cross_method_required_for_release_validation: true
+
+time_step_policy_ns:
+  primary: 0.002
+  refinement: 0.001
+  rule:
+    - run_primary_EM_at_0p002
+    - run_Milstein_crosscheck_at_0p002
+    - run_temporal_refinement_at_0p001_for_release_validation
+  no_claim_of_deterministic_order_from_stochastic_noise: true
+
+sampling_policy:
+  default_paths_per_start: 32768
+  adaptive_escalation_paths_per_start: 65536
+  minimum_total_right_exit_events_for_auditability: 50
+  preferred_total_right_exit_events_for_precision: 100
+  fixed_seed_required: true
+  report_binomial_or_regression_uncertainty: true
+
+first_exit_horizon_policy_ns:
+  initial: 500
+  escalation: 1500
+  if_unresolved_after_1500:
+    classification: NOT_AUDITABLE_BY_BRUTE_FORCE_BD
+    interpretation: not_a_physical_model_failure
+    fallback: validated_deterministic_ISD_FP
+
+boundary_slope_estimator:
+  identity: P_equals_Dbulk_times_qprime_at_left_boundary
+  regression: weighted_linear_through_exact_q_left_equals_zero
+  default_offsets_nm: [0.25, 0.35, 0.45, 0.55, 0.65]
+  default_window_nm: 0.65
+  window_may_expand_only_if_bulk_like: true
+  bulk_like_limits:
+    maximum_absolute_g: 0.08
+    maximum_relative_D_deviation_from_bulk: 0.08
+  independent_of_ISD_resistance_integral: true
+
+validation_acceptance:
+  require_all_first_exit_trajectories_resolved: true
+  require_bridge_crossings_observed: true
+  maximum_relative_BD_vs_FP: 0.10
+  maximum_BD_vs_FP_zscore: 4.0
+  maximum_EM_vs_Milstein_zscore: 4.0
+  maximum_primary_vs_refinement_zscore: 4.0
+  maximum_boundary_fit_reduced_chi2: 6.0
+  interpretation:
+    relative_threshold: stochastic_validation_guard_not_deterministic_tolerance
+    zscore_threshold: compatibility_guard
+    failure: investigate_or_classify_not_auditable_do_not_force_agreement
+
+validated_evidence:
+  - FLAT
+  - MODERATE
+  - BASIN
+  - BARRIER
+
+excluded_from_bruteforce_validation:
+  - profile: P4_NARROW_OUTER
+    status: NOT_AUDITABLE_BY_BRUTE_FORCE_BD_AT_1500_NS
+    blocks_deterministic_production_map: false
+
+production_freeze:
+  BD_validation_numerics_frozen: true
+  BD_used_as_production_map_engine: false
+  MFPT_frozen: false
+  regime_map_started: false

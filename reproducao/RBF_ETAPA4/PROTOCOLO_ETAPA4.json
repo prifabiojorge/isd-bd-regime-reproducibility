@@ -1,0 +1,123 @@
+{
+  "stage": 4,
+  "authorization": "Autorizo 4.",
+  "authorization_local_datetime": "2026-10-02T17:34:30-03:00",
+  "scope": "Matriz e sensibilidades; sem alterar a produção histórica e sem iniciar etapas 5–7",
+  "candidate_m": 16,
+  "dimension": 17,
+  "bits": 30,
+  "optimization": null,
+  "skip_first": false,
+  "thin": false,
+  "H_nm": 4,
+  "L_nm": 8,
+  "T_ref_K": 323,
+  "filter_grid_N": 3201,
+  "filter_atol": 2e-12,
+  "new_label_guard_abs": 1e-05,
+  "guard_refinement_nodes": [
+    6401,
+    12801
+  ],
+  "baseline_validation_atol": 2e-12,
+  "baseline_validation_rtol_P": 2e-12,
+  "domain_scenarios": [
+    {
+      "id": "amplitude_G_080",
+      "label": "Amplitudes G × 0,80",
+      "change": "scale_bounds",
+      "fields": [
+        0,
+        1,
+        2
+      ],
+      "factor": 0.8,
+      "family": "amplitudes G"
+    },
+    {
+      "id": "amplitude_D_080",
+      "label": "Amplitudes ln d × 0,80",
+      "change": "scale_bounds",
+      "fields": [
+        8,
+        9,
+        10
+      ],
+      "factor": 0.8,
+      "family": "amplitudes D"
+    },
+    {
+      "id": "larguras_G_centro50",
+      "label": "Larguras G: metade central",
+      "change": "central_half",
+      "fields": [
+        5,
+        6,
+        7
+      ],
+      "family": "larguras G"
+    },
+    {
+      "id": "larguras_D_metade_inferior",
+      "label": "Larguras D: metade inferior",
+      "change": "lower_half",
+      "fields": [
+        13,
+        14,
+        15
+      ],
+      "family": "larguras D"
+    },
+    {
+      "id": "larguras_D_metade_superior",
+      "label": "Larguras D: metade superior",
+      "change": "upper_half",
+      "fields": [
+        13,
+        14,
+        15
+      ],
+      "family": "larguras D"
+    },
+    {
+      "id": "posicoes_centro50",
+      "label": "Posições: metade central",
+      "change": "central_half",
+      "fields": [
+        3,
+        4,
+        11,
+        12
+      ],
+      "family": "posições"
+    }
+  ],
+  "domain_design": "Mesmos 65.536 pontos Sobol não embaralhados, remapeados em uma família de limites por cenário",
+  "posthoc_d_min": [
+    0.15,
+    0.2
+  ],
+  "posthoc_interpretation": "Recortes mais estritos do ensemble existente; não novos ensembles remapeados",
+  "sampling_prefix_m": [
+    14,
+    15,
+    16,
+    17
+  ],
+  "extension_m": 17,
+  "extension_reuse_original_prefix": true,
+  "scrambled_seed": [
+    2026100201,
+    2026100202,
+    2026100203,
+    2026100204
+  ],
+  "scrambling": "SciPy LMS+shift; rng inteiro; PCG64 registrado na execução",
+  "sampling_interpretation": "Variação numérica do desenho sintético; sem intervalo de confiança populacional ou física",
+  "rationale": "Perturbações contidas nas caixas originais. Escalas 0,80 e metades são escolhas de teste, não novas medidas empíricas. Larguras D opostas testam suporte; posições centrais reduzem a dispersão geométrica. Filtro físico original preservado nos remapeamentos. d_min=0,20 é cenário mais restritivo próximo da âncora ~0,199, sem universalizar a supressão.",
+  "pilot_seconds": {
+    "source_module_128": 0.250885794,
+    "batch_kernel_512": 0.257882366
+  },
+  "provenance_docs": "https://docs.scipy.org/doc/scipy-1.17.0/reference/generated/scipy.stats.qmc.Sobol.html"
+}

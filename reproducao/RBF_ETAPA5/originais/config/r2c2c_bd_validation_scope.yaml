@@ -1,0 +1,32 @@
+release: R2_C2C_FIX3
+role_of_bd: stochastic_validation_only
+production_map_engine: deterministic_ISD_and_FP
+
+absorbing_boundary_detection:
+  method: Brownian_bridge
+  flat_constant_D_status: exact_and_validated
+  variable_D_status: local_D_approximation_validated_on_auditable_nonflat_profiles
+
+brute_force_bd_auditability:
+  require_all_first_exit_trajectories_resolved: true
+  minimum_total_right_exit_events: 50
+  boundary_window:
+    maximum_absolute_g: 0.08
+    maximum_relative_D_deviation_from_bulk: 0.08
+  failure_to_meet_auditability:
+    classification: NOT_AUDITABLE_BY_BRUTE_FORCE_BD
+    interpretation: not_a_physical_model_failure
+    fallback: use_validated_deterministic_ISD_FP_for_production
+
+validated_evidence_classes:
+  - FLAT
+  - MODERATE
+  - BASIN
+  - BARRIER
+
+documented_out_of_bruteforce_scope:
+  - P4_NARROW_OUTER_at_1500_ns
+
+production_numerics_frozen_in_this_gate: false
+mfpt_frozen_in_this_gate: false
+next_gate: R2_C2D_BD_NUMERICS_FREEZE
