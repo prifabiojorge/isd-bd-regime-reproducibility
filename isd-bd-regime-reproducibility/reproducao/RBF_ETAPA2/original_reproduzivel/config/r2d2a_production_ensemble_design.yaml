@@ -1,0 +1,152 @@
+release: R2_D2A
+status: PRODUCTION_ENSEMBLE_DESIGN_FROZEN
+
+sampler:
+  family: Sobol
+  scramble: false
+  dimension: 17
+  ordering: identical_to_R2_D1A
+  deterministic: true
+  physical_population_interpretation: prohibited
+
+candidate_design:
+  primary_power_m: 16
+  primary_candidate_N: 65536
+  rationale:
+    - exact_power_of_two_required_for_Sobol_balance
+    - eightfold_expansion_over_validated_8192_point_pilot
+    - pilot_acceptance_fraction_0p866577_implies_approximately_56800_accepted_profiles
+  escalation:
+    allowed: true
+    power_m: 17
+    candidate_N: 131072
+    trigger_only_if_production_coverage_gate_fails: true
+    no_escalation_for_cosmetic_smoothing: true
+
+parameter_space:
+  source:
+    coefficient_policy: config/r1d2b_production_coefficient_policy.yaml
+    literature_bounds: data/literature/literature_bounds.csv
+  dimensions:
+    - a_center
+    - a_inner
+    - a_outer
+    - mu_g_inner
+    - mu_g_outer
+    - sigma_g_center
+    - sigma_g_inner
+    - sigma_g_outer
+    - b_center
+    - b_inner
+    - b_outer
+    - mu_d_inner
+    - mu_d_outer
+    - sigma_d_center
+    - sigma_d_inner
+    - sigma_d_outer
+    - D_bulk
+  coefficient_boxes_are_generator_only: true
+  full_profile_filter_mandatory: true
+  rejected_candidates_must_be_counted: true
+  rejected_candidates_are_not_map_points: true
+
+production_evaluation:
+  engine: ISD
+  grid_N: 3201
+  required_fields:
+    - sobol_index
+    - all_17_generator_parameters
+    - g_min
+    - g_max
+    - d_min
+    - d_max
+    - eta
+    - P_nm_ns
+    - P_cm_s
+    - log10_P_cm_s
+    - logR0
+    - logRG
+    - logRD
+    - logRGD
+    - AG
+    - AD
+    - CG
+    - CD
+    - deltaC
+    - interaction
+    - wG
+    - wD
+    - rho
+    - resistance_peak_abs_z_nm
+
+numerical_validation:
+  ISD_refinement:
+    grid_N: 6401
+    subset_size: 1024
+    subset_rule: deterministic_stratified_union_across_AG_AD_deltaC_rho_logP_plus_extrema
+    max_relative_P_difference: 1.0e-7
+    record_max_absolute_deltaC_difference: true
+  FP_crosscheck:
+    grid_N: 6401
+    subset_size: 128
+    subset_rule: deterministic_stratified_union_across_exact_control_plane_plus_extrema_and_near_boundary
+    max_relative_FP_vs_ISD: 5.0e-5
+    canonical_solver_required: SCHAFETTER_GUMMEL_RESISTANCE_NETWORK
+  failure_policy:
+    any_guard_failure_blocks_production_ensemble_freeze: true
+    targeted_12801_escalation_allowed_for_diagnosis: true
+    silent_candidate_removal_for_numerical_failure: prohibited
+
+production_coverage_gate:
+  accepted_profiles_minimum: 50000
+  both_regimes_required: true
+  thermodynamic_minimum: 5000
+  diffusive_minimum: 5000
+  exact_control_plane:
+    binning_for_audit_only: 32x32
+    occupied_bin_fraction_minimum_of_accessible_bbox: 0.70
+    near_boundary_profiles:
+      definition: abs_deltaC_less_equal_0p10
+      minimum_count: 500
+  proxy_plane:
+    binning_for_audit_only: 32x32
+    occupied_bins_minimum: 500
+    mixed_sign_bins_are_expected_and_not_failure: true
+  shape_correction:
+    finite_rho_for_all_accepted_profiles: true
+  note: coverage_binning_is_a_sampling_diagnostic_not_a_population_model
+
+map_architecture:
+  exact_control_plane:
+    coordinates: [AG, AD]
+    boundary: AG_equals_AD
+  intuitive_proxy_plane:
+    coordinates: [max_g, eta]
+    exact_classifier: false
+  shape_plane:
+    coordinates: [max_g, eta]
+    color: rho
+  source_of_truth: config/r2d1c_map_coordinate_architecture.yaml
+
+reproducibility:
+  sampler_is_deterministic: true
+  random_seed: not_applicable
+  candidate_order_preserved: true
+  source_hashes_required: true
+  output_manifest_required: true
+
+BD_policy:
+  production_map_engine: false
+  role: independent_validation_only
+  production_ensemble_generation_requires_BD: false
+  representative_BD_spotcheck: deferred_to_later_gate
+
+not_frozen_here:
+  production_dataset_itself: true
+  figure_interpolation_method: true
+  figure_rendering: true
+  neutral_band: true
+  MFPT: true
+  novelty_claim: true
+
+next_gate: R2_D2B_GENERATE_AND_VALIDATE_PRODUCTION_ENSEMBLE

@@ -1,0 +1,42 @@
+schema_version: 1.0.0
+mission_id: ISDBD-R1-D2B-FINAL-COEFFICIENT-FREEZE-001
+status: PRODUCTION_COEFFICIENT_BOUNDS_FROZEN
+selected_scenario: P5_A075_B_NONPOSITIVE075
+coefficient_bounds:
+  a_j:
+  - -16.756210454868953
+  - 9.774456098673554
+  b_j:
+  - -1.8059592064889038
+  - 0.0
+  final: true
+geometry_source: data/literature/literature_bounds.csv
+mandatory_full_profile_acceptance:
+  g_min: -22.34161393982527
+  g_max: 13.03260813156474
+  d_min: 0.09
+  d_max: 1.0
+  rule: Every generated profile must be evaluated on the canonical z grid and rejected
+    if any point violates the frozen profile envelope.
+reference_temperature_K: 323.0
+integration_domain:
+  H_nm: 4.0
+  L_nm: 8.0
+audit:
+  N: 65536
+  scramble: false
+  z_grid_points: 3201
+  refined_points: 6401
+  G_accept_fraction: 0.9818878173828125
+  D_accept_fraction: 0.8846282958984375
+  joint_accept_fraction: 0.868621826171875
+  accepted_G_global_min: -22.338806033216606
+  accepted_G_global_max: 13.027680586725605
+  accepted_eta_max: 1.0456894041889717
+  all_checks_pass: true
+percentile_inference_allowed: false
+coefficient_bounds_final: true
+documentary_profile_bounds_modified: false
+geometry_bounds_modified: false
+scientific_simulation_performed: false
+next_gate: R1_D_RELEASE_CLOSURE

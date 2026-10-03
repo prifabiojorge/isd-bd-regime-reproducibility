@@ -1,0 +1,140 @@
+{
+  "stage": 5,
+  "authorization": "Autorizo 5.",
+  "authorization_local_datetime": "2026-10-02T18:44:00-03:00",
+  "scope": "Verificação numérica e fronteira; etapas 6–7 pendentes",
+  "H_nm": 4.0,
+  "L_nm": 8.0,
+  "T_ref_K": 323.0,
+  "historical_filter_retained": true,
+  "integration": {
+    "all_original_accepted_grid": 6401,
+    "targeted_grids": [
+      3201,
+      6401,
+      12801,
+      25601
+    ],
+    "maximum_adaptive_grid": 51201,
+    "original_relative_P_convergence": 1e-07,
+    "contribution_absolute_convergence": 1e-07,
+    "error_estimate": "2*abs(last_fine-last_coarse)+1e-12; Delta bound=sum(AG bound, AD bound)",
+    "roundoff_floor": 1e-12,
+    "boundary_descriptive_delta": 0.1,
+    "gradient_rank_grid": 401,
+    "gradient_top_each": 64,
+    "all_proxy_discordances_selected": true,
+    "all_original_boundary_profiles_selected": true,
+    "original_1024_audit_selected": true,
+    "additional_per_case": {
+      "closest_delta": 32,
+      "closest_proxy": 8,
+      "lowest_dmin": 16,
+      "highest_gmax": 8
+    },
+    "quad_subset_maximum": 96,
+    "quad_epsabs": 1e-11,
+    "quad_epsrel": 1e-11
+  },
+  "fp": {
+    "original_128_selected": true,
+    "targeted_extra_top_each": 8,
+    "closest_delta_each_sign": 16,
+    "new_stage4_case_nearest_each": 2,
+    "grids": [
+      3201,
+      6401,
+      12801
+    ],
+    "audit_highest_grid": 25601,
+    "decimal_precision": 60,
+    "max_relative_FP_vs_ISD": 5e-05,
+    "max_relative_direct_vs_network": 5e-12,
+    "max_flux_nonuniformity": 1e-20,
+    "max_equation_backward_residual": 1e-30,
+    "c_left": 1.0,
+    "c_right": 0.0
+  },
+  "bd": {
+    "new_control": "Quarteto contrafactual de um perfil calibrado na fronteira operacional, fora da produção histórica",
+    "baseline_geometry": [
+      1.15,
+      2.0,
+      0.62,
+      0.4,
+      0.29,
+      1.7,
+      2.2,
+      0.4,
+      0.4,
+      0.4
+    ],
+    "baseline_a": [
+      3.0,
+      -1.0,
+      0.5
+    ],
+    "baseline_b": [
+      -0.3,
+      -0.4,
+      -0.2
+    ],
+    "D_bulk_nm2_ns": 0.95,
+    "g_scale_root_interval": [
+      0.0,
+      1.0
+    ],
+    "root_absolute_tolerance": 2e-14,
+    "states": [
+      "FLAT",
+      "G_ONLY",
+      "D_ONLY",
+      "GD_BOUNDARY"
+    ],
+    "runs": [
+      {
+        "method": "EM",
+        "dt_ns": 0.002
+      },
+      {
+        "method": "MILSTEIN",
+        "dt_ns": 0.002
+      },
+      {
+        "method": "EM",
+        "dt_ns": 0.001
+      }
+    ],
+    "paths_per_start": 32768,
+    "offsets_nm": [
+      0.25,
+      0.35,
+      0.45,
+      0.55,
+      0.65
+    ],
+    "initial_horizon_ns": 500.0,
+    "escalation_horizon_ns": 1500.0,
+    "maximum_abs_g_boundary": 0.08,
+    "maximum_relative_D_deviation_boundary": 0.08,
+    "minimum_right_exits": 50,
+    "preferred_right_exits": 100,
+    "max_relative_BD_vs_FP": 0.1,
+    "max_z_BD_vs_FP": 4.0,
+    "max_cross_method_z": 4.0,
+    "max_time_refinement_z": 4.0,
+    "max_fit_reduced_chi2": 6.0,
+    "seed_base": 2026100205000,
+    "seed_rule": "seed_base + 10*state_index + run_index, indices starting at 1",
+    "generator": "std::mt19937_64 + std::normal_distribution<double>; compiler/library version recorded",
+    "bridge": "exact conditional boundary formula for constant D; local-D approximation otherwise",
+    "integration": "Ito, EM/Milstein, drift=Dprime-D*gprime",
+    "failure_rule": "Investigate or report coverage limit; do not choose a new seed to obtain agreement"
+  },
+  "uncertainty": {
+    "integration": "numeric estimate, not certified bound",
+    "BD": "conditional Monte Carlo/regression uncertainty",
+    "domain_sampling": "descriptive stage-4 sensitivity",
+    "physical_profiles": "no uncertainty model available"
+  }
+}

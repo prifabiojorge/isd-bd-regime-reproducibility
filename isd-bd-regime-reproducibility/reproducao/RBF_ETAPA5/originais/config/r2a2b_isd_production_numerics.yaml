@@ -1,0 +1,56 @@
+schema_version: 1.0.0
+mission_id: ISDBD-R2-A2B-ISD-PRODUCTION-NUMERICS-FREEZE-001
+status: ISD_PRODUCTION_NUMERICS_FROZEN
+source_audit:
+  suite_profiles: 524
+  sobol_profiles: 512
+  stress_profiles: 12
+  fine_acceptance_flips: 0
+  internal_reference_grid_points: 12801
+  reference_declared_exact: false
+production:
+  method: LOG_TRAPEZOID
+  grid_points: 3201
+  H_nm: 4.0
+  L_nm: 8.0
+  dz_nm: 0.0025
+  relative_convergence_tolerance: 1.0e-07
+  refinement_grid_points: 6401
+  refinement_dz_nm: 0.00125
+  escalation_grid_points: 12801
+  escalation_dz_nm: 0.000625
+empirical_basis:
+  max_relerr_1601_vs_12801: 2.1988763191287277e-07
+  max_relerr_3201_vs_12801: 5.235413219942159e-08
+  max_relerr_6401_vs_12801: 1.0470509879953049e-08
+  max_successive_1601_to_3201: 1.6753349094238064e-07
+  max_successive_3201_to_6401: 4.188362188092566e-08
+  max_successive_6401_to_12801: 1.0470509879953049e-08
+  observed_order_1601_3201_6401: 1.9999914180821594
+  observed_order_3201_6401_12801: 2.0000545059752026
+  richardson_p2_estimated_relerr_3201: 5.5844829174567545e-08
+  direct_log_max_rel_3201: 2.3190338828407325e-14
+  direct_log_max_rel_12801: 2.0083888476383057e-13
+selection:
+  rule: coarsest audited grid with worst observed error and p=2 Richardson estimate
+    both below 1e-7
+  grid_1601_rejected: true
+  grid_3201_selected: true
+runtime_rule:
+  default: P_3201
+  validation: require abs(P_3201-P_6401)/P_6401 <= 1e-7 when refinement validation
+    is invoked
+  on_failure: compute P_12801 and mark NUMERICAL_REFINEMENT_REQUIRED
+  block_if: abs(P_6401-P_12801)/P_12801 > 1e-7
+profile_filter:
+  mandatory: true
+  canonical_grid_points: 3201
+  fine_audit: 0/524 acceptance flips at 12801
+scope:
+  new_profile_computation_run: false
+  new_isd_computation_run: false
+  scientific_simulation_run: false
+  FP_computed: false
+  BD_computed: false
+  MFPT_computed: false
+  production_map_started: false
