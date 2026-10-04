@@ -2,7 +2,7 @@
 
 Creators: Fábio Jorge de Nazaré Ferreira and Fernanda Guilhon-Simplicio, Universidade Federal do Amazonas.
 
-This repository exposes the scientific source code and configuration for **Classificação integrada das contribuições termodinâmica e difusiva em um modelo de permeação por membranas lipídicas**. The full scientific distribution includes large archived datasets and figures and is deposited separately on Zenodo. The authors will add the specific Zenodo DOI here after publication. Until that link is added, obtain `RBF_REPRODUCIBILIDADE_ZENODO_v1.0.0.zip` from the authors.
+This repository exposes the scientific source code and configuration for **Classificação integrada das contribuições termodinâmica e difusiva em um modelo de permeação por membranas lipídicas**. The full scientific distribution includes large archived datasets and figures and is deposited separately on Zenodo. Full reproducibility dataset (version 1.0.0): https://doi.org/10.5281/zenodo.23128726
 
 ## Verify the archived results
 
